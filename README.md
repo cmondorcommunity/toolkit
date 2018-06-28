@@ -34,6 +34,7 @@ docker-compose up
 * scripts/
 * .env.example - example file to use if needed
 
+### Created Resources
 
 ECS
  + DNS

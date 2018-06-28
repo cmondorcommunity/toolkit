@@ -1,11 +1,12 @@
 FROM ubuntu:xenial
 
+
 RUN apt-get update -y && \
-  apt-get install -y python-pip wget unzip curl && \
+  apt-get install -y python-pip unzip curl && \
   pip install awscli  && \
   rm -rf /var/apt/cache
 
-RUN wget -O /tmp/tfenv.zip https://github.com/kamatama41/tfenv/archive/v0.6.0.zip
+RUN curl -s -L -o /tmp/tfenv.zip https://github.com/kamatama41/tfenv/archive/v0.6.0.zip
 
 RUN unzip /tmp/tfenv.zip && \
       mv tfenv-0.6.0/ /usr/local/tfenv && \

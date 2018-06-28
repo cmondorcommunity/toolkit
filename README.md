@@ -7,19 +7,14 @@ AWS capable of running terraform, packer, docker and other orchestration tooling
 ## requires
 
 * docker-compose
-
 * Linux/Unix based OS
-
 * ~/.aws directory with
-
 * optional aws profile
 
 ## Usage
 
 * clone the repo
-
 * cd into repository root
-
 * replace .env.example with your secure credentials
 
 ```
@@ -43,12 +38,13 @@ ECS
     + aws_vpc
     + aws_subnets
         + 1 public-us-west-2a  <-- ALBs
-        + 1 private-us-west-2a  <-- instances, LambdaFunctions
+        + 1 private-us-west-2a  <-- instances, rds, elasticache, etc
     + internet gateway
     + NAT Gateway
     + s3 endpoints
     + default Network ACLs
     + default route tables
+ + bastion EC2 instance
  +  ECS cluster
    + IAM policy instance profile
    + IAM trust policy
@@ -56,8 +52,22 @@ ECS
      + manual scaling 1 instance
      + security groups
      + aws launch configs
+ + ECR Docker Registry
  + ECS Service
    + ECS task
    + task definition
  +  ALB
    + security groups
+
+### TODO
+
+* establish domain & SSL Certs
+* Entrypoint Script
+* CodePipeline
+* Jenkins
+  * Dockerfile
+  * ECS Container Definition
+* docs
+* tagging convention
+* .env.example with Temporary Credentials
+* write TF modules

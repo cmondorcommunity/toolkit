@@ -18,7 +18,7 @@ AWS capable of running terraform, packer, docker and other orchestration tooling
 * replace .env.example with your secure credentials
 
 ```
-docker-compose up
+docker-compose run toolkit
 ```
 
 ### Repository Layout

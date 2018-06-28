@@ -1,6 +1,5 @@
 FROM ubuntu:xenial
 
-
 RUN apt-get update -y && \
   apt-get install -y python-pip unzip curl && \
   pip install awscli  && \

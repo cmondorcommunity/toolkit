@@ -10,3 +10,5 @@ services:
       - "./docker:/app/docker"
       - "./jenkins:/app/jenkins"
       - "./terraform:/app/terraform"
+    stdin_open: true
+    tty: true

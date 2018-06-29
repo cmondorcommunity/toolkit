@@ -60,14 +60,15 @@ ECS
    + security groups
 
 ### TODO
-
 * establish domain & SSL Certs
-* Entrypoint Script
-* CodePipeline
 * Jenkins
-  * Dockerfile
   * ECS Container Definition
-* docs
 * tagging convention
+```
+org         = "${var.org}"
+project     = "${var.project}"
+environment = "${var.environment}"
+```
 * .env.example with Temporary Credentials
-* write TF modules
+* docs
+* CodePipeline Example

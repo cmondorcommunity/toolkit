@@ -1,0 +1,5 @@
+node {
+    stage ('Clone') {
+        sh "echo do something"
+    }
+}

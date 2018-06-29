@@ -29,6 +29,14 @@ ${TF_INIT_PATH}
 terraform plan
 #####
 
+# TODO build and deploy Jenkins Image to ECR
+cd /app/jenkins
+docker-compose build
+
+#docker login
+#docker push
+#docker logout
+
 # Deploy ECS Jenkins
 echo "entering /app/terraform/src/02-main"
 cd /app/terraform/src/02-main

@@ -10,5 +10,7 @@ services:
       - "./docker:/app/docker"
       - "./jenkins:/app/jenkins"
       - "./terraform:/app/terraform"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    privileged: true
     stdin_open: true
     tty: true

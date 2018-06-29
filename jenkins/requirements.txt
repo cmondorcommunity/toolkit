@@ -1,0 +1,9 @@
+awscli
+click
+cookiecutter
+ipaddress
+Jinja2
+PyYAML
+requests
+six
+docker-compose

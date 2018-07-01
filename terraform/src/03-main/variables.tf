@@ -22,10 +22,11 @@ variable "az_count" {
 
 variable "key_name" {
   description = "Name of AWS key pair"
+  default = ""
 }
 
 variable "instance_type" {
-  default     = "t2.small"
+  default     = "t2.large"
   description = "AWS instance type"
 }
 
@@ -36,7 +37,7 @@ variable "asg_min" {
 
 variable "asg_max" {
   description = "Max numbers of servers in ASG"
-  default     = "2"
+  default     = "1"
 }
 
 variable "asg_desired" {
@@ -46,4 +47,6 @@ variable "asg_desired" {
 
 variable "admin_cidr_ingress" {
   description = "CIDR to allow tcp/22 ingress to EC2 instance"
+  default     = "23.240.120.70/32" # replace with workstation egress/external NAT IP
 }
+

@@ -1,10 +1,10 @@
 version: "3.3"
 services:
-  jenkins:
-    container_name: "jenkins"
+  toolkit:
+    container_name: "toolkit"
     build:
       context: .
-    image: "jenkins"
+    image: "toolkit"
     ports:
       - 8080:8080
       - 127.0.0.1:50000:50000

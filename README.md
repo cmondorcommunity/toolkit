@@ -18,7 +18,12 @@ AWS capable of running terraform, packer, docker and other orchestration tooling
 * replace .env.example with your secure credentials
 
 ```
-docker-compose run toolkit
+docker-compose run deployer
+```
+
+### Destroying Cloud Resources
+```
+docker-compose run -e DESTROY=1 deployer
 ```
 
 ### Repository Layout

@@ -10,6 +10,7 @@ else
         echo "Jenkins has already been bootstrapped, starting up ..."
         exec /usr/local/bin/jenkins.sh "$@"
     else
+        # TODO inject git config info
         cat <<EOF > /var/jenkins_home/.gitconfig
 [user]
         email = jenkins@cmondorcommunity.com

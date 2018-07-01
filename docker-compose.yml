@@ -1,12 +1,13 @@
 ---
 version: "3.3"
 services:
-  toolkit:
-    image: toolkit
-    container_name: toolkit
+  deployer:
+    image: deployer
+    container_name: deployer
     build:
       context: .
     volumes:
+      - "${HOME}/.aws:/root/.aws"
       - "./docker:/app/docker"
       - "./jenkins:/app/jenkins"
       - "./terraform:/app/terraform"

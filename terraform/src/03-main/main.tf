@@ -2,7 +2,7 @@
 
 resource "aws_autoscaling_group" "app" {
   name                 = "tf-test-asg"
-  vpc_zone_identifier  = ["${data.aws_subnet.main.*.id}"]
+  vpc_zone_identifier  = ["${data.aws_subnet.private_a.id}", "${data.aws_subnet.private_b.id}"]
   min_size             = "${var.asg_min}"
   max_size             = "${var.asg_max}"
   desired_capacity     = "${var.asg_desired}"
@@ -257,7 +257,7 @@ resource "aws_alb_target_group" "test" {
 
 resource "aws_alb" "main" {
   name            = "tf-example-alb-ecs"
-  subnets         = ["${data.aws_subnet.main.*.id}"]
+  subnets         = ["${data.aws_subnet.public_a.id}", "${data.aws_subnet.public_b.id}"]
   security_groups = ["${aws_security_group.lb_sg.id}"]
 }
 

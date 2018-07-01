@@ -3,7 +3,7 @@ FROM ubuntu:xenial
 # utils
 RUN apt-get update -y && \
   apt-get install -y python-pip unzip curl jq && \
-  pip install awscli docker-compose && \
+  pip install --no-cache-dir awscli docker-compose && \
   rm -rf /var/apt/cache
 
 # tfenv

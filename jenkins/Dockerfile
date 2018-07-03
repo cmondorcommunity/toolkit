@@ -12,16 +12,16 @@ RUN apt-get update && \
     apt-get -y install sudo curl jq less nano python-pip virtualenv netcat && \
     usermod -aG sudo jenkins && \
     echo "%sudo ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/nopasswd && \
-    rm -rf /var/apt/cache
+    rm -rf /var/cache/apt/*
 
 # Install Python requirements
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --upgrade --no-cache-dir -r /tmp/requirements.txt
 
 # Packer https://releases.hashicorp.com/packer/1.2.4/packer_1.2.4_linux_amd64.zip
-ADD https://releases.hashicorp.com/packer/1.2.4/packer_1.2.4_linux_amd64.zip /usr/local/packer
-RUN chmod -R 755 /usr/local/packer && \
-    ln -s /usr/local/packer /usr/local/bin/packer
+RUN curl -sSL -o /tmp/packer.zip https://releases.hashicorp.com/packer/1.2.4/packer_1.2.4_linux_amd64.zip && \
+    unzip -uo /tmp/packer.zip -d /usr/local/bin && \
+    chmod -R 755 /usr/local/bin/packer
 
 # tfenv
 RUN mkdir -p /usr/local/tfenv && \
@@ -48,5 +48,5 @@ COPY ref/ /usr/share/jenkins/ref/
 RUN chown -R jenkins:root /usr/share/jenkins
 
 # Switch back to jenkins user so that jenkins runs as jenkins
-USER jenkins
+#USER jenkins
 WORKDIR /var/jenkins_home

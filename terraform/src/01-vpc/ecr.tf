@@ -1,5 +1,5 @@
 resource "aws_ecr_repository" "main" {
-  name = "${var.project}"
+  name = "toolkit"
 }
 
 //TODO

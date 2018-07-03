@@ -14,10 +14,7 @@ ${TFENV} use ${TF_VERSION}
 
 [ ! -z "${DESTROY}" ] && {
     set +e
-    cd /app/terraform/src/03-main
-    ${TF_INIT_PATH}
-    terraform destroy
-    cd /app/terraform/src/02-ecr
+    cd /app/terraform/src/02-toolkit
     ${TF_INIT_PATH}
     terraform destroy
     cd /app/terraform/src/01-vpc
@@ -42,7 +39,7 @@ EOF
 cd /app/terraform/src/00-init
 ${TF_INIT_PATH}
 
-terraform apply
+terraform apply -auto-approve
 
 AWS_ACCOUNT_NUMBER=$(echo "data.aws_caller_identity.main.account_id" | terraform console)
 
@@ -50,6 +47,7 @@ cat << EOF
 
 ###########################################
 # Building VPC /app/terraform/src/01-vpc" #
+#        and ECR Docker Registry          #
 ###########################################
 
 EOF
@@ -57,21 +55,8 @@ EOF
 cd /app/terraform/src/01-vpc
 ${TF_INIT_PATH}
 
-terraform apply
+terraform apply -auto-approve
 
-cat << EOF
-
-###########################################################
-# Building ECR Docker Registry /app/terraform/src/02-ecr #
-###########################################################
-
-EOF
-
-cd /app/terraform/src/02-ecr
-${TF_INIT_PATH}
-
-#terraform plan
-terraform apply
 ECR_REPO_URL=$(echo "aws_ecr_repository.main.repository_url" | terraform console)
 
 cat << EOF
@@ -90,21 +75,22 @@ set +x
 echo "Logging into ECR: aws ecr get-login"
 $(aws ecr get-login --no-include-email)
 set -x
+
 docker push ${REMOTE_IMAGE_URL}
 
 # Deploy ECS Jenkins
 cat << EOF
 
-###########################################################
-# Building ECS Jenkins Service /app/terraform/src/03-main #
-###########################################################
+##############################################################
+# Building ECS Jenkins Service /app/terraform/src/02-toolkit #
+##############################################################
 
 EOF
 
-cd /app/terraform/src/03-main
+cd /app/terraform/src/02-toolkit
 ${TF_INIT_PATH}
 
-terraform apply
+terraform apply -auto-approve
 
 ELB_HOSTNAME=$(echo "aws_alb.main.dns_name" | terraform console)
 

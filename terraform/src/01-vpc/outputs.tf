@@ -1,7 +1,3 @@
-output "public_subnets" {
-  value = ["${module.vpc.public_subnets}"]
-}
-
-output "private_subnets" {
-  value = ["${module.vpc.private_subnets}"]
+output "repository_url" {
+  value = "${aws_ecr_repository.main.repository_url}"
 }

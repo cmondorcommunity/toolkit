@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sudo chown jenkins. /var/jenkins_home
+
 if [ ! -z "$@" ]; then
     # CMD was specified, pass through to old entrypoint
     exec /usr/local/bin/jenkins.sh "$@"

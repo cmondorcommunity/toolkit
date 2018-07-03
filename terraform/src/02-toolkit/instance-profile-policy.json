@@ -10,7 +10,15 @@
         "ecs:Poll",
         "ecs:RegisterContainerInstance",
         "ecs:Submit*",
-        "ecs:StartTelemetrySession"
+        "ecs:StartTelemetrySession",
+        "ecr:GetAuthorizationToken",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:GetRepositoryPolicy",
+        "ecr:DescribeRepositories",
+        "ecr:ListImages",
+        "ecr:DescribeImages",
+        "ecr:BatchGetImage"
       ],
       "Resource": [
         "*"

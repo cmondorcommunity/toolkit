@@ -10,6 +10,26 @@ variable "project" {
   default = "myproj"
 }
 
+variable "ECS_IMAGE" {
+  default = "762748083517.dkr.ecr.us-west-2.amazonaws.com/toolkit:latest"
+}
+
+variable "EFS_HOST_PATH" {
+  default = "/efs"
+}
+
+variable "ECS_CONTAINER_NAME" {
+  default = "toolkit"
+}
+
+variable "ECS_VOLUME_NAME" {
+  default = "toolkit"
+}
+
+variable "ECS_CONTAINER_PATH" {
+  default = "/var/jenkins_home"
+}
+
 variable "aws_region" {
   description = "The AWS region to create things in."
   default     = "us-west-2"

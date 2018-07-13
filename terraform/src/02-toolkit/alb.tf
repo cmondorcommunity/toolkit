@@ -4,7 +4,6 @@ resource "aws_alb_target_group" "test" {
   protocol = "HTTP"
   vpc_id   = "${data.aws_vpc.main.id}"
 
-
   health_check {
     interval            = 30
     path                = "/login"
@@ -43,7 +42,7 @@ resource "aws_security_group" "lb_sg" {
     protocol    = "tcp"
     from_port   = 80
     to_port     = 80
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${local.WAN_IP}/32"]
   }
 
   egress {

@@ -17,8 +17,8 @@ locals {
 }
 
 resource "aws_efs_mount_target" "ecs_efs_priva_mt" {
-  count          = "${var.az_count}"
-  file_system_id = "${aws_efs_file_system.ecs_efs.id}"
-  subnet_id      = "${element(local.subnets, count.index)}"
+  count           = "${var.az_count}"
+  file_system_id  = "${aws_efs_file_system.ecs_efs.id}"
+  subnet_id       = "${element(local.subnets, count.index)}"
   security_groups = ["${aws_security_group.instance_sg.id}"]
 }

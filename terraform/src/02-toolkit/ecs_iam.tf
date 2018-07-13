@@ -6,7 +6,15 @@ resource "aws_iam_role" "ecs_service" {
   "Version": "2008-10-17",
   "Statement": [
     {
-      "Sid": "",
+      "Sid": "Stmnt201711142108",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    },
+    {
+      "Sid": "Stmnt201711142109",
       "Effect": "Allow",
       "Principal": {
         "Service": "ecs.amazonaws.com"
@@ -92,3 +100,4 @@ resource "aws_iam_role_policy" "ecs_service" {
 }
 EOF
 }
+

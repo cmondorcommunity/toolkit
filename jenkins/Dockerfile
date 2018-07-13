@@ -48,5 +48,5 @@ COPY ref/ /usr/share/jenkins/ref/
 RUN chown -R jenkins:root /usr/share/jenkins
 
 # Switch back to jenkins user so that jenkins runs as jenkins
-#USER jenkins
+USER jenkins
 WORKDIR /var/jenkins_home

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "List /var/jenkins_home"
+ls -la /var/jenkins_home
+
 sudo chown jenkins. /var/jenkins_home
 
 if [ ! -z "$@" ]; then

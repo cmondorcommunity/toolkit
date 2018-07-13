@@ -12,6 +12,18 @@
         "protocol": "tcp"
       }
     ],
+    "mountPoints": [
+      {
+        "sourceVolume": "docker_sock",
+        "containerPath": "/var/run/docker.sock",
+        "readOnly": false
+      },
+      {
+        "sourceVolume": "${efs_volume_name}",
+        "containerPath": "${ecs_container_path}",
+        "readOnly": false
+      }
+    ],
     "logConfiguration": {
         "logDriver": "awslogs",
         "options": {

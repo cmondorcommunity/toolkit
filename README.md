@@ -15,8 +15,8 @@ AWS capable of running terraform, packer, docker and other orchestration tooling
 
 * clone the repo
 * cd into repository root
-* replace .env.example with your secure credentials
-
+* replace content and rename .env.example to .env
+* run docker-compose
 ```
 docker-compose run deployer
 ```
@@ -72,8 +72,9 @@ ECS
 org         = "${var.org}"
 project     = "${var.project}"
 environment = "${var.environment}"
+domain      = "${var.domain}"
+terraform   = "true"
 ```
-* .env.example and entrypoint mods for setting org, project, environment
 * docs
 * Jenkins hardening
 * Toolkit Refresh Pipeline

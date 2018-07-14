@@ -19,11 +19,6 @@ set -e
     echo "################  DOMAIN NOT SET   ##################"
 }
 S3_FINAL_BUCKET_NAME="${ORG}-tlkt-tfstate"
-
-S3_NAME_REPLACED=""
-
-
-
 ECS_IMAGE_NAME="toolkit" #TODO get from .env
 TF_VERSION="latest" # 0.11.7
 TFENV="/usr/local/bin/tfenv"

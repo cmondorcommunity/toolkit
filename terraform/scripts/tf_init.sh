@@ -36,5 +36,16 @@ echo "Configurating"
 # initialize terraform
 PHASE=$(basename $(pwd))
 REGION=$(basename $(dirname $(pwd)))
-terraform init -input=false -backend-config="key=\"$PHASE-$REGION-terraform.tfstate\""
-terraform validate
+
+[ -z "${ORG}" ] && {
+    echo "####### ORG NOT SET, see README.md  ########"
+    exit 1
+}
+
+if [ "${PHASE}" = "00-init" ]; then
+    terraform init -input=false -backend-config="key=\"$PHASE-$REGION-terraform.tfstate\""
+else
+    terraform init -input=false -backend-config="key=\"$PHASE-$REGION-terraform.tfstate\"" -backend-config="bucket=\"${ORG}-tlkt-tfstate\""
+fi
+
+terraform validate -var org=${ORG}

@@ -1,11 +1,9 @@
-variable "org" {
-  default = "myorg"
-}
+variable "org" {}
 
 variable "environment" {
-  default = "myenv"
+  default = "toolkit"
 }
 
 variable "project" {
-  default = "myproj"
+  default = "toolkit"
 }

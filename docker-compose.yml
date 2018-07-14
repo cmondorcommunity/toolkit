@@ -6,6 +6,8 @@ services:
     container_name: deployer
     build:
       context: .
+    environment:
+      - "ORG=${ORG}"
     volumes:
       - "${HOME}/.aws:/root/.aws"
       - "./docker:/app/docker"

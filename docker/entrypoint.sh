@@ -32,13 +32,13 @@ ${TFENV} use ${TF_VERSION}
     set +e
     cd /app/terraform/src/02-toolkit
     ${TF_INIT_PATH}
-    terraform destroy
+    terraform destroy -var org=${ORG}
     cd /app/terraform/src/01-vpc
     ${TF_INIT_PATH}
-    terraform destroy
+    terraform destroy -var org=${ORG}
     cd /app/terraform/src/00-init
     ${TF_INIT_PATH}
-    terraform destroy
+    terraform destroy -var org=${ORG}
     set -e
     exit 0
 }

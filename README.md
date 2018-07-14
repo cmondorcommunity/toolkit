@@ -86,6 +86,7 @@ ECS
 ```
 
 ### TODO
+* Enable multi-region support (currently static coded to us-west-2)
 * remove hard coded hacks from prototype development
 * integrate domain & SSL Certs (certbot)
 * tagging convention

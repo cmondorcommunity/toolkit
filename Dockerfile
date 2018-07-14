@@ -4,7 +4,7 @@ FROM ubuntu:xenial
 RUN apt-get update -y && \
   apt-get install -y python-pip unzip curl jq && \
   pip install --no-cache-dir awscli docker-compose && \
-  rm -rf /var/apt/cache
+  rm -rf /var/lib/apt/lists/*
 
 # tfenv
 RUN mkdir -p /usr/local/tfenv && \

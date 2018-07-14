@@ -14,10 +14,7 @@ ${TFENV} use ${TF_VERSION}
 
 [ ! -z "${DESTROY}" ] && {
     set +e
-    cd /app/terraform/src/03-main
-    ${TF_INIT_PATH}
-    terraform destroy
-    cd /app/terraform/src/02-ecr
+    cd /app/terraform/src/02-toolkit
     ${TF_INIT_PATH}
     terraform destroy
     cd /app/terraform/src/01-vpc
@@ -32,24 +29,26 @@ ${TFENV} use ${TF_VERSION}
 
 cat << EOF
 
-#########################################################
-Create TF Statefile s3 bucket /app/terraform/src/00-init
-#########################################################
+################################################################
+Create Terraform Statefile s3 bucket /app/terraform/src/00-init
+################################################################
 
 EOF
 
-# TODO test if exists
-cd /app/terraform/src/00-init
-${TF_INIT_PATH}
+# If terraform s3 statefile bucket exists, skip 00-init phase
+aws s3 ls myenv-myorg-tfstate || {
+    cd /app/terraform/src/00-init
+    ${TF_INIT_PATH}
+    terraform apply -auto-approve
+}
 
-terraform apply
-
-AWS_ACCOUNT_NUMBER=$(echo "data.aws_caller_identity.main.account_id" | terraform console)
+AWS_ACCOUNT_NUMBER=$(aws sts get-caller-identity --query "Account" --output=text)
 
 cat << EOF
 
 ###########################################
 # Building VPC /app/terraform/src/01-vpc" #
+#        and ECR Docker Registry          #
 ###########################################
 
 EOF
@@ -57,21 +56,7 @@ EOF
 cd /app/terraform/src/01-vpc
 ${TF_INIT_PATH}
 
-terraform apply
-
-cat << EOF
-
-###########################################################
-# Building ECR Docker Registry /app/terraform/src/02-ecr #
-###########################################################
-
-EOF
-
-cd /app/terraform/src/02-ecr
-${TF_INIT_PATH}
-
-#terraform plan
-terraform apply
+terraform apply -auto-approve
 ECR_REPO_URL=$(echo "aws_ecr_repository.main.repository_url" | terraform console)
 
 cat << EOF
@@ -90,44 +75,37 @@ set +x
 echo "Logging into ECR: aws ecr get-login"
 $(aws ecr get-login --no-include-email)
 set -x
-docker push ${REMOTE_IMAGE_URL}
+
+[ -n "${TOOLKIT_SKIP_PUSH}" ] && {
+    docker push ${REMOTE_IMAGE_URL}
+}
 
 # Deploy ECS Jenkins
 cat << EOF
 
-###########################################################
-# Building ECS Jenkins Service /app/terraform/src/03-main #
-###########################################################
+##############################################################
+# Building ECS Jenkins Service /app/terraform/src/02-toolkit #
+##############################################################
 
 EOF
 
-cd /app/terraform/src/03-main
+cd /app/terraform/src/02-toolkit
 ${TF_INIT_PATH}
 
-terraform apply
+terraform apply -auto-approve
 
 ELB_HOSTNAME=$(echo "aws_alb.main.dns_name" | terraform console)
-
-cat << EOF
-
-##################################################################################
-#              yawn... I'm going to take a nap for 3 minutes.                    #
-# We'll need to wait for EC2 instances, ECS service and LB Healthchecks to pass. #
-##################################################################################
-
-EOF
-
-sleep 180
 
 # TODO readiness loop
 
 cat << EOF
 
-#########################################################################
-#                 We now have a toolkit in the cloud                    #
-#                                                                       #
-#   http://${ELB_HOSTNAME}/   #
-#                                                                       #
-#########################################################################
+##################################################################################
+# We'll need to wait for EC2 instances, ECS service and LB Healthchecks to pass. #
+#                 Afterwhich, a Jenkins instance is available at                 #
+#                                                                                #
+#   http://${ELB_HOSTNAME}/
+##################################################################################
 
 EOF
+

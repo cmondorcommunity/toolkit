@@ -7,21 +7,20 @@ RUN  grep -v -E '^#' /usr/share/jenkins/ref/plugins.txt | /usr/local/bin/install
 # Temporarily switch user to root for build
 USER root
 
+# Install Python requirements
+COPY requirements.txt /tmp/requirements.txt
+
 # Enable sudo
 RUN apt-get update && \
     apt-get -y install sudo curl jq less nano python-pip virtualenv netcat && \
     usermod -aG sudo jenkins && \
     echo "%sudo ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/nopasswd && \
-    rm -rf /var/apt/cache
-
-# Install Python requirements
-COPY requirements.txt /tmp/requirements.txt
-RUN pip install --upgrade --no-cache-dir -r /tmp/requirements.txt
+    pip install --upgrade --no-cache-dir -r /tmp/requirements.txt
 
 # Packer https://releases.hashicorp.com/packer/1.2.4/packer_1.2.4_linux_amd64.zip
-ADD https://releases.hashicorp.com/packer/1.2.4/packer_1.2.4_linux_amd64.zip /usr/local/packer
-RUN chmod -R 755 /usr/local/packer && \
-    ln -s /usr/local/packer /usr/local/bin/packer
+RUN curl -sSL -o /tmp/packer.zip https://releases.hashicorp.com/packer/1.2.4/packer_1.2.4_linux_amd64.zip && \
+    unzip -uo /tmp/packer.zip -d /usr/local/bin && \
+    chmod -R 755 /usr/local/bin/packer
 
 # tfenv
 RUN mkdir -p /usr/local/tfenv && \

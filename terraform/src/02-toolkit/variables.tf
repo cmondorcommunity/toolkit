@@ -10,6 +10,26 @@ variable "project" {
   default = "myproj"
 }
 
+variable "ECS_IMAGE" {
+  default = "762748083517.dkr.ecr.us-west-2.amazonaws.com/toolkit:latest"
+}
+
+variable "EFS_HOST_PATH" {
+  default = "/mnt/efs" #see files/ecs_user_data.sh.tpl before changing
+}
+
+variable "ECS_CONTAINER_NAME" {
+  default = "toolkit"
+}
+
+variable "ECS_VOLUME_NAME" {
+  default = "toolkit"
+}
+
+variable "ECS_CONTAINER_PATH" {
+  default = "/var/jenkins_home"
+}
+
 variable "aws_region" {
   description = "The AWS region to create things in."
   default     = "us-west-2"
@@ -22,7 +42,7 @@ variable "az_count" {
 
 variable "key_name" {
   description = "Name of AWS key pair"
-  default = ""
+  default     = ""
 }
 
 variable "instance_type" {
@@ -47,6 +67,5 @@ variable "asg_desired" {
 
 variable "admin_cidr_ingress" {
   description = "CIDR to allow tcp/22 ingress to EC2 instance"
-  default     = "23.240.120.70/32" # replace with workstation egress/external NAT IP
+  default     = "23.240.120.70/32"                             # replace with workstation egress/external NAT IP
 }
-

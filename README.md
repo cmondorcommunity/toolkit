@@ -65,15 +65,18 @@ ECS
    + security groups
 
 ### TODO
-* establish domain & SSL Certs
-* Jenkins
-  * ECS Container Definition
+* remove hard coded hacks from prototype development
+* integrate domain & SSL Certs (certbot)
 * tagging convention
 ```
 org         = "${var.org}"
 project     = "${var.project}"
 environment = "${var.environment}"
 ```
-* .env.example with Temporary Credentials
+* .env.example and entrypoint mods for setting org, project, environment
 * docs
+* Jenkins hardening
+* Toolkit Refresh Pipeline
 * CodePipeline Example
+* Sample Infrastructure Repo
+* cookiecutter tooling to create infrastructure repos

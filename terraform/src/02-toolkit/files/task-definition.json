@@ -1,0 +1,35 @@
+[
+  {
+    "cpu": 0,
+    "essential": true,
+    "privileged": true,
+    "image": "${image_url}",
+    "memory": 2048,
+    "name": "${container_name}",
+    "portMappings": [
+      {
+        "containerPort": 8080,
+        "protocol": "tcp"
+      }
+    ],
+    "mountPoints": [
+      {
+        "sourceVolume": "docker_sock",
+        "containerPath": "/var/run/docker.sock",
+        "readOnly": false
+      },
+      {
+        "sourceVolume": "${efs_volume_name}",
+        "containerPath": "${ecs_container_path}",
+        "readOnly": false
+      }
+    ],
+    "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+            "awslogs-group": "${log_group_name}",
+            "awslogs-region": "${log_group_region}"
+        }
+    }
+  }
+]

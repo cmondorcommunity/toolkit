@@ -64,6 +64,27 @@ ECS
  +  ALB
    + security groups
 
+### Required IAM Role
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "NotAction": [
+        "aws-portal:*",
+        "cloudtrail:*",
+        "config:*",
+        "directconnect:*",
+        "organizations:*",
+        "storagegateway:*"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
 ### TODO
 * remove hard coded hacks from prototype development
 * integrate domain & SSL Certs (certbot)

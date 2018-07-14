@@ -92,7 +92,7 @@ echo "Logging into ECR: aws ecr get-login"
 $(aws ecr get-login --no-include-email)
 set -x
 
-[ -n "${TOOLKIT_SKIP_PUSH}" ] && {
+[ -z "${TOOLKIT_SKIP_PUSH}" ] && {
     docker push ${REMOTE_IMAGE_URL}
 }
 

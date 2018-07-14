@@ -39,7 +39,7 @@ EOF
 aws s3 ls myenv-myorg-tfstate || {
     cd /app/terraform/src/00-init
     ${TF_INIT_PATH}
-    terraform apply -auto-approve
+    terraform apply
 }
 
 AWS_ACCOUNT_NUMBER=$(aws sts get-caller-identity --query "Account" --output=text)
@@ -56,7 +56,7 @@ EOF
 cd /app/terraform/src/01-vpc
 ${TF_INIT_PATH}
 
-terraform apply -auto-approve
+terraform apply
 ECR_REPO_URL=$(echo "aws_ecr_repository.main.repository_url" | terraform console)
 
 cat << EOF
@@ -92,7 +92,7 @@ EOF
 cd /app/terraform/src/02-toolkit
 ${TF_INIT_PATH}
 
-terraform apply -auto-approve
+terraform apply
 
 ELB_HOSTNAME=$(echo "aws_alb.main.dns_name" | terraform console)
 

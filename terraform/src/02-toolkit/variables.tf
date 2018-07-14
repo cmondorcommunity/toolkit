@@ -8,8 +8,6 @@ variable "project" {
   default = "toolkit"
 }
 
-variable "ECS_IMAGE" {}
-
 variable "EFS_HOST_PATH" {
   default = "/mnt/efs" #see files/ecs_user_data.sh.tpl before changing
 }

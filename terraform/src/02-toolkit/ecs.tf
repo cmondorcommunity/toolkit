@@ -6,13 +6,19 @@ data "template_file" "task_definition" {
   template = "${file("${path.module}/files/task-definition.json")}"
 
   vars {
-    image_url          = "${var.ECS_IMAGE}"
+    image_url          = "${local.ECS_IMAGE_URL}"
     container_name     = "${var.ECS_CONTAINER_NAME}"
     log_group_region   = "${var.aws_region}"
     log_group_name     = "${aws_cloudwatch_log_group.app.name}"
     efs_volume_name    = "${var.ECS_VOLUME_NAME}"
     ecs_container_path = "${var.ECS_CONTAINER_PATH}"
   }
+}
+
+data "aws_caller_identity" "main" {}
+
+locals {
+  ECS_IMAGE_URL = "${data.aws_caller_identity.main.account_id}.dkr.ecr.us-west-2.amazonaws.com/${var.ECS_CONTAINER_NAME}:latest"
 }
 
 resource "aws_ecs_task_definition" "toolkit" {

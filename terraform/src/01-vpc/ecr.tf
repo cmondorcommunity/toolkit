@@ -12,3 +12,4 @@ resource "aws_ecr_repository" "main" {
 //  policy = ""
 //  repository = ""
 //}
+

@@ -1,3 +1,12 @@
+//Tagging convention
+//tags {
+//  org = "${var.org}"
+//  project = "${var.project}"
+//  environment = "${var.environment}"
+//  domain = "${var.domain}"
+//  terraform = "true"
+//}
+
 # workstation
 data "external" "wan" {
   program = ["${path.cwd}/files/get_wanip.sh"]

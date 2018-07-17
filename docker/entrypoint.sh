@@ -18,6 +18,29 @@ set -e
 [ -z "${DOMAIN}" ] && {
     echo "################  DOMAIN NOT SET   ##################"
 }
+
+echo "outside"
+[ ! -f /app/terraform/src/00-init/terraform.tfvars ] && {
+    echo "domain = \"${DOMAIN}\"" >> /app/terraform/src/00-init/terraform.tfvars
+    echo "domain = \"${DOMAIN}\"" >> /app/terraform/src/01-vpc/terraform.tfvars
+    echo "domain = \"${DOMAIN}\"" >> /app/terraform/src/02-toolkit/terraform.tfvars
+    echo "environment = \"${ENVIRONMENT}\"" >> /app/terraform/src/00-init/terraform.tfvars
+    echo "environment = \"${ENVIRONMENT}\"" >> /app/terraform/src/01-vpc/terraform.tfvars
+    echo "environment = \"${ENVIRONMENT}\"" >> /app/terraform/src/02-toolkit/terraform.tfvars
+    echo "org = \"${ORG}\"" >> /app/terraform/src/00-init/terraform.tfvars
+    echo "org = \"${ORG}\"" >> /app/terraform/src/01-vpc/terraform.tfvars
+    echo "org = \"${ORG}\"" >> /app/terraform/src/02-toolkit/terraform.tfvars
+    echo "project = \"${PROJECT}\"" >> /app/terraform/src/00-init/terraform.tfvars
+    echo "project = \"${PROJECT}\"" >> /app/terraform/src/01-vpc/terraform.tfvars
+    echo "project = \"${PROJECT}\"" >> /app/terraform/src/02-toolkit/terraform.tfvars
+    echo "aws_profile = \"${AWS_PROFILE}\"" >> /app/terraform/src/00-init/terraform.tfvars
+    echo "aws_profile = \"${AWS_PROFILE}\"" >> /app/terraform/src/01-vpc/terraform.tfvars
+    echo "aws_profile = \"${AWS_PROFILE}\"" >> /app/terraform/src/02-toolkit/terraform.tfvars
+    echo "toolkit_hostname = \"${TOOLKIT_HOSTNAME}\"" >> /app/terraform/src/02-toolkit/terraform.tfvars
+    echo "cert_hostname_override = \"${CERT_HOSTNAME_OVERRIDE}\"" >> /app/terraform/src/02-toolkit/terraform.tfvars
+}
+echo "done"
+
 S3_FINAL_BUCKET_NAME="${ORG}-tlkt-tfstate"
 ECS_IMAGE_NAME="toolkit" #TODO get from .env
 TF_VERSION="latest" # 0.11.7
@@ -32,13 +55,13 @@ ${TFENV} use ${TF_VERSION}
     set +e
     cd /app/terraform/src/02-toolkit
     ${TF_INIT_PATH}
-    terraform destroy -var org=${ORG}
+    terraform destroy
     cd /app/terraform/src/01-vpc
     ${TF_INIT_PATH}
-    terraform destroy -var org=${ORG}
+    terraform destroy
     cd /app/terraform/src/00-init
     ${TF_INIT_PATH}
-    terraform destroy -var org=${ORG}
+    terraform destroy
     set -e
     exit 0
 }
@@ -55,7 +78,7 @@ EOF
 aws s3 ls ${ORG}-tlkt-tfstate || {
     cd /app/terraform/src/00-init
     ${TF_INIT_PATH}
-    terraform apply -var org=${ORG}
+    terraform apply
 }
 
 AWS_ACCOUNT_NUMBER=$(aws sts get-caller-identity --query "Account" --output=text)
@@ -72,7 +95,7 @@ EOF
 cd /app/terraform/src/01-vpc
 ${TF_INIT_PATH}
 
-terraform apply -var org=${ORG}
+terraform apply
 ECR_REPO_URL=$(echo "aws_ecr_repository.main.repository_url" | terraform console)
 
 cat << EOF
@@ -92,7 +115,7 @@ echo "Logging into ECR: aws ecr get-login"
 $(aws ecr get-login --no-include-email)
 set -x
 
-[ -z "${TOOLKIT_SKIP_PUSH}" ] && {
+[ -n "${TOOLKIT_SKIP_PUSH}" ] && {
     docker push ${REMOTE_IMAGE_URL}
 }
 
@@ -108,9 +131,9 @@ EOF
 cd /app/terraform/src/02-toolkit
 ${TF_INIT_PATH}
 
-terraform apply -var org=${ORG}
+terraform apply
 
-ELB_HOSTNAME=$(echo "aws_alb.main.dns_name" | terraform console)
+TOOLKIT_FQDN=$(terraform output toolkit_fqdn)
 
 # TODO readiness loop
 
@@ -120,7 +143,7 @@ cat << EOF
 # We'll need to wait for EC2 instances, ECS service and LB Healthchecks to pass. #
 #                 Afterwhich, a Jenkins instance is available at                 #
 #                                                                                #
-#   http://${ELB_HOSTNAME}/
+   https://${TOOLKIT_FQDN}/
 ##################################################################################
 
 EOF

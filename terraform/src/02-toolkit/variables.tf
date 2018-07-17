@@ -1,12 +1,10 @@
+variable "domain" {}
+
+variable "environment" {}
+
 variable "org" {}
 
-variable "environment" {
-  default = "toolkit"
-}
-
-variable "project" {
-  default = "toolkit"
-}
+variable "project" {}
 
 variable "EFS_HOST_PATH" {
   default = "/mnt/efs" #see files/ecs_user_data.sh.tpl before changing

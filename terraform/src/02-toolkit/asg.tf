@@ -5,6 +5,30 @@ resource "aws_autoscaling_group" "app" {
   max_size             = "${var.asg_max}"
   desired_capacity     = "${var.asg_desired}"
   launch_configuration = "${aws_launch_configuration.app.name}"
+
+  tag {
+    key                 = "org"
+    value               = "${var.org}"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "project"
+    value               = "${var.project}"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "environment"
+    value               = "${var.environment}"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "terraform"
+    value               = "true"
+    propagate_at_launch = true
+  }
 }
 
 data "template_file" "cloud_config_amznlinux" {
@@ -32,7 +56,7 @@ resource "aws_launch_configuration" "app" {
   ]
 
   key_name                    = "${var.key_name}"
-  image_id                    = "ami-decc7fa6"                                          #"${data.aws_ami.stable_coreos.id}"
+  image_id                    = "${data.aws_ami.ecs_ami.id}"
   instance_type               = "${var.instance_type}"
   iam_instance_profile        = "${aws_iam_instance_profile.app.name}"
   user_data                   = "${data.template_file.cloud_config_amznlinux.rendered}"

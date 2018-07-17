@@ -10,6 +10,14 @@ output "asg_name" {
   value = "${aws_autoscaling_group.app.id}"
 }
 
-output "elb_hostname" {
+output "alb_hostname" {
   value = "${aws_alb.main.dns_name}"
+}
+
+output "toolkit_fqdn" {
+  value = "${local.toolkit_fqdn}"
+}
+
+locals {
+  toolkit_fqdn = "${aws_route53_record.toolkit.name}"
 }

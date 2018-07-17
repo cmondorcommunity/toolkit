@@ -8,6 +8,13 @@ services:
       context: .
     environment:
       - "ORG=${ORG}"
+      - "DOMAIN=${DOMAIN}"
+      - "ENVIRONMENT=${ENVIRONMENT}"
+      - "PROJECT=${PROJECT}"
+      - "TOOLKIT_HOSTNAME=${TOOLKIT_HOSTNAME}"
+      - "TOOLKIT_SKIP_PUSH=${TOOLKIT_SKIP_PUSH}"
+      - "AWS_PROFILE=${AWS_PROFILE}"
+      - "CERT_HOSTNAME_OVERRIDE=${CERT_HOSTNAME_OVERRIDE}"
     volumes:
       - "${HOME}/.aws:/root/.aws"
       - "./docker:/app/docker"

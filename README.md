@@ -10,6 +10,8 @@ AWS capable of running terraform, packer, docker and other orchestration tooling
 * Linux/Unix based OS
 * ~/.aws directory with
 * optional aws profile
+* Route53 Zone
+* AWS ACM Certificate
 
 ## Usage
 
@@ -32,7 +34,7 @@ docker-compose run -e DESTROY=1 deployer
 * jenkins/ - jenkins related artifacts for building, deploying, upgrading
 * terraform/ - terraform code for building the Ops VPC Jenkins will live in
 * scripts/
-* .env.example - example file to use if needed
+* .env.example - example docker environment file
 
 ### Created Resources
 
@@ -49,7 +51,6 @@ ECS
     + s3 endpoints
     + default Network ACLs
     + default route tables
- + bastion EC2 instance
  +  ECS cluster
    + IAM policy instance profile
    + IAM trust policy
@@ -88,7 +89,6 @@ ECS
 ### TODO
 * Enable multi-region support (currently static coded to us-west-2)
 * remove hard coded hacks from prototype development
-* integrate domain & SSL Certs (certbot)
 * tagging convention
 ```
 org         = "${var.org}"

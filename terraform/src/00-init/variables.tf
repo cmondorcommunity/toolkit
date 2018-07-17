@@ -1,9 +1,7 @@
+variable "domain" {}
+
+variable "environment" {}
+
 variable "org" {}
 
-variable "project" {
-  default = "toolkit"
-}
-
-variable "environment" {
-  default = "toolkit"
-}
+variable "project" {}

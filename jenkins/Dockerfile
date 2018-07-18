@@ -27,6 +27,7 @@ RUN mkdir -p /usr/local/tfenv && \
     curl -sSL https://github.com/kamatama41/tfenv/archive/v0.6.0.tar.gz \
     | tar -xzC /usr/local/tfenv && \
     chmod 755 /usr/local/tfenv/tfenv-0.6.0/bin/* && \
+    chown -R jenkins. /usr/local/tfenv/tfenv-0.6.0 && \
     ln -s /usr/local/tfenv/tfenv-0.6.0/bin/* /usr/local/bin
 
 # docker client

@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-[ -z "${DEBUG}" ] && { set -x }
-set -e
 
 [ -z "${ORG}" ] && {
     echo "################  ORG NOT SET   ##################"
@@ -112,10 +110,12 @@ cd /app/jenkins
 docker-compose build
 REMOTE_IMAGE_URL="${ECR_REPO_URL}:latest"
 docker tag ${ECS_IMAGE_NAME}  ${REMOTE_IMAGE_URL}
-set +x
+
 echo "Logging into ECR: aws ecr get-login"
 $(aws ecr get-login --no-include-email)
-set -x
+[ -z "${DEBUG}" ] && {
+    set -x
+}
 
 [ -n "${TOOLKIT_SKIP_PUSH}" ] && {
     docker push ${REMOTE_IMAGE_URL}

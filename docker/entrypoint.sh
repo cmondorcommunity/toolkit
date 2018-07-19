@@ -68,9 +68,11 @@ ${TFENV} use ${TF_VERSION}
 
 cat << EOF
 
-################################################################
-Create Terraform Statefile s3 bucket /app/terraform/src/00-init
-################################################################
+#####################################################################
+#                                                                   #
+#  Create Terraform Statefile s3 bucket /app/terraform/src/00-init  #
+#                                                                   #
+#####################################################################
 
 EOF
 
@@ -85,10 +87,12 @@ AWS_ACCOUNT_NUMBER=$(aws sts get-caller-identity --query "Account" --output=text
 
 cat << EOF
 
-###########################################
-# Building VPC /app/terraform/src/01-vpc" #
-#        and ECR Docker Registry          #
-###########################################
+#############################################
+#                                           #
+#  Building VPC /app/terraform/src/01-vpc"  #
+#        and ECR Docker Registry            #
+#                                           #
+#############################################
 
 EOF
 
@@ -100,9 +104,11 @@ ECR_REPO_URL=$(echo "aws_ecr_repository.main.repository_url" | terraform console
 
 cat << EOF
 
-###################################################
-# Building/Publishing Jenkins Docker image to ECR #
-###################################################
+#####################################################
+#                                                   #
+#  Building/Publishing Jenkins Docker image to ECR  #
+#                                                   #
+#####################################################
 
 EOF
 
@@ -124,9 +130,11 @@ $(aws ecr get-login --no-include-email)
 # Deploy ECS Jenkins
 cat << EOF
 
-##############################################################
-# Building ECS Jenkins Service /app/terraform/src/02-toolkit #
-##############################################################
+################################################################
+#                                                              #
+#  Building ECS Jenkins Service /app/terraform/src/02-toolkit  #
+#                                                              #
+################################################################
 
 EOF
 
@@ -145,11 +153,12 @@ while [ "$READY" != "200" ]; do
     [ $i -eq 0 ] && {
         i=1
         cat << EOF
-#########################################################
-#                                                       #
-# Waiting for Initial DNS and LoadBalancer HealthChecks #
-#             sleeping 5m                               #
-#########################################################
+##########################################################
+#                                                        #
+#  Waiting for Initial DNS and LoadBalancer HealthChecks #
+#              sleeping 5m                               #
+#                                                        #
+##########################################################
 EOF
         sleep 300 # 5m
     }
@@ -161,9 +170,9 @@ cat << EOF
 
 ########################################
 #                                      #
-#  The Toolkit for ${ORG} @ ${DOMAIN}  #
+#              Toolkit                 #
 #        is now available at:          #
-   https://${TOOLKIT_FQDN}/
+https://${TOOLKIT_FQDN}/
 #                                      #
 ########################################
 

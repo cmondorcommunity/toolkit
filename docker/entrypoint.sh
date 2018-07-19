@@ -139,8 +139,8 @@ TOOLKIT_FQDN=$(terraform output toolkit_fqdn)
 
 # readiness check, sleep 5m then check every 10s
 i=0
-READINESS_COMMAND="curl -q -s -o /dev/null -w '%{http_code}' https://${TOOLKIT_FQDN}/login"
-READY=$(${READINESS_COMMAND})
+READINESS_COMMAND="curl -q -s -o /dev/null -w %{http_code} https://${TOOLKIT_FQDN}/login"
+READY=`${READINESS_COMMAND}`
 while [ "$READY" != "200" ]; do
     [ $i -eq 0 ] && {
         i=1

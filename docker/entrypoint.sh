@@ -1,25 +1,28 @@
 #!/usr/bin/env bash
 
-set -x
+[ -z "${DEBUG}" ] && { set -x }
 set -e
 
 [ -z "${ORG}" ] && {
     echo "################  ORG NOT SET   ##################"
+    echo "see README.md - copy .env.example to .env and add desired org setting"
 }
 
 [ -z "${PROJECT}" ] && {
     echo "################  PROJECT NOT SET   ##################"
+    echo "see README.md - copy .env.example to .env and add desired project setting"
 }
 
 [ -z "${ENVIRONMENT}" ] && {
     echo "################  ENVIRONMENT NOT SET   ##################"
+    echo "see README.md - copy .env.example to .env and add desired environment setting"
 }
 
 [ -z "${DOMAIN}" ] && {
     echo "################  DOMAIN NOT SET   ##################"
+    echo "see README.md - copy .env.example to .env and add desired domain setting"
 }
 
-echo "outside"
 [ ! -f /app/terraform/src/00-init/terraform.tfvars ] && {
     echo "domain = \"${DOMAIN}\"" >> /app/terraform/src/00-init/terraform.tfvars
     echo "domain = \"${DOMAIN}\"" >> /app/terraform/src/01-vpc/terraform.tfvars
@@ -39,7 +42,6 @@ echo "outside"
     echo "toolkit_hostname = \"${TOOLKIT_HOSTNAME}\"" >> /app/terraform/src/02-toolkit/terraform.tfvars
     echo "cert_hostname_override = \"${CERT_HOSTNAME_OVERRIDE}\"" >> /app/terraform/src/02-toolkit/terraform.tfvars
 }
-echo "done"
 
 S3_FINAL_BUCKET_NAME="${ORG}-tlkt-tfstate"
 ECS_IMAGE_NAME="toolkit" #TODO get from .env
@@ -135,7 +137,19 @@ terraform apply
 
 TOOLKIT_FQDN=$(terraform output toolkit_fqdn)
 
-# TODO readiness loop
+# readiness check, sleep 5m then check every 10s
+i=0
+READINESS_COMMAND="curl -q -s -o /dev/null -w '%{http_code}' https://${TOOLKIT_FQDN}/login"
+READY=$(${READINESS_COMMAND})
+while [ "$READY" != "200" ]; do
+    [ $i -eq 0 ] && {
+        i=1
+        echo "Waiting for Initial DNS and LoadBalancer HealthChecks"
+        sleep 300 # 5m
+    }
+    READY=$(${READINESS_COMMAND})
+    sleep 10 # 10s
+done
 
 cat << EOF
 

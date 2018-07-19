@@ -144,7 +144,13 @@ READY=`${READINESS_COMMAND}`
 while [ "$READY" != "200" ]; do
     [ $i -eq 0 ] && {
         i=1
-        echo "Waiting for Initial DNS and LoadBalancer HealthChecks"
+        cat << EOF
+#########################################################
+#                                                       #
+# Waiting for Initial DNS and LoadBalancer HealthChecks #
+#             sleeping 5m                               #
+#########################################################
+EOF
         sleep 300 # 5m
     }
     READY=$(${READINESS_COMMAND})
@@ -153,12 +159,13 @@ done
 
 cat << EOF
 
-##################################################################################
-# We'll need to wait for EC2 instances, ECS service and LB Healthchecks to pass. #
-#                 Afterwhich, a Jenkins instance is available at                 #
-#                                                                                #
+########################################
+#                                      #
+#  The Toolkit for ${ORG} @ ${DOMAIN}  #
+#        is now available at:          #
    https://${TOOLKIT_FQDN}/
-##################################################################################
+#                                      #
+########################################
 
 EOF
 
